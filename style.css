@@ -7,17 +7,28 @@ body {
     justify-content: center;
     align-content: center;
 }
-
 .container {
+    margin-top: 50px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: center;
     width: 40%;
-    height: 350px;
+    height: auto;
     background: rgb(214, 213, 213);
-    grid-gap: 3px;
-
 }
 .container .box {
-    font-size: 100px;
+    width: auto;
+    height: 100px;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+    font-size: 80px;
+    text-align: center;
     background: white;
+}
+.container .box:nth-child(3n) {
+    border-right: none;
+}
+.container .box:nth-child(n + 7) {
+    border-bottom: none;
 }
