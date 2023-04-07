@@ -9,11 +9,44 @@ const winArray = [
     [0, 4, 8],
     [2, 4, 6]
 ]
-const Gameboard = (name, gameArray) => {
+const Gameboard = (name, gameArray, winArr) => {
     const getName = () => name;
     const gameBoard = () => gameArray;
+    const getArr = () => winArr;
     let currentPlayer = name;
 
+    const createDiv = () => {
+        const winPage = document.createElement('div');
+        const whoWins = document.createElement('div');
+        const resetBtn = document.createElement('div');
+        winPage.classList.add('win-page');
+        whoWins.classList.add('who-wins');
+        resetBtn.classList.add('reset-btn');
+        resetBtn.textContent = 'Reset Game';
+        winPage.append(whoWins, resetBtn);
+        return {winPage, whoWins};
+    }
+    const playWithSelf = (enemy) => {
+
+        for (let array of winArr) {
+            let [oneIndex, twoIndex, threeIndex] = array;
+            if(gameboard[oneIndex] === name 
+                && gameboard[twoIndex] === name
+                && gameboard[threeIndex] === name) {
+                    const {winPage, whoWins} = createDiv();
+                    whoWins.textContent = 'Player Wins';
+                    winPage.style.display = 'block';
+            }
+            if(gameboard[oneIndex] === enemy.getName() 
+                && gameboard[twoIndex] === enemy.getName()
+                && gameboard[threeIndex] === enemy.getName()) {
+                    const {winPage, whoWins} = createDiv();
+                    whoWins.textContent = 'Ai Wins';
+                    winPage.style.display = 'block';
+            }   
+        }
+    }
+    const playWithAi = () => {}
     const makeContainerElem = () => {
         const container = document.createElement('div');
         container.classList.add('container');
@@ -25,18 +58,21 @@ const Gameboard = (name, gameArray) => {
 
         box.addEventListener('click', () => {
             currentPlayer = currentPlayer === name? enemy.getName(): name;
-            box.textContent = currentPlayer;
             gameArray[index] = currentPlayer;
+            box.textContent = gameArray[index];
+            playWithSelf(enemy);
+
         }, {once: true});
         return box;
     }
     const resetGame = (enemy) => {
         gameContainerElem = makeContainerElem();
+        const {winPage} = createDiv();
         gameBoxElem = makeBoxElem();
         for (let index = 0; index < 9; index++) {
             gameContainerElem.appendChild(makeBoxElem(index, enemy));
         }
-        document.body.appendChild(gameContainerElem);
+        document.body.append(gameContainerElem, winPage);
     }
     return {resetGame, getName, gameBoard}
 }
