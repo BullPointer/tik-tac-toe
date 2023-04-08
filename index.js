@@ -30,14 +30,24 @@ const SoloGameboard = (name, gameArray, winArr) => {
 
         for (let array of winArr) {
             let [oneIndex, twoIndex, threeIndex] = array;
-            if(gameboard[oneIndex] === name 
-                && gameboard[twoIndex] === name
+            const arr = gameboard.every(name => name !== '')
+            if (arr === true
+                && gameboard[oneIndex] !== gameboard[twoIndex] 
+                && gameboard[oneIndex] !== gameboard[threeIndex]
+                && gameboard[threeIndex] !== (name||enemy.getName())) {
+                whowins.textContent = `It's a Draw!`;
+                winpage.style.display = 'flex';
+            }
+            if(gameboard[oneIndex] !== ''
+                && gameboard[oneIndex] === gameboard[twoIndex] 
+                && gameboard[oneIndex] === gameboard[threeIndex]
                 && gameboard[threeIndex] === name) {
                     whowins.textContent = 'Player Wins';
                     winpage.style.display = 'flex';
             }
-            if(gameboard[oneIndex] === enemy.getName() 
-                && gameboard[twoIndex] === enemy.getName()
+            if(gameboard[oneIndex] !== ''
+                && gameboard[oneIndex] === gameboard[twoIndex] 
+                && gameboard[oneIndex] === gameboard[threeIndex]
                 && gameboard[threeIndex] === enemy.getName()) {
                     whowins.textContent = 'Ai Wins';
                     winpage.style.display = 'flex';
@@ -89,3 +99,4 @@ const player = SoloGameboard('O', gameboard, winArray);
 const ai = SoloGameboard('X', gameboard, winArray);
 
 player.resetGame(ai);
+
