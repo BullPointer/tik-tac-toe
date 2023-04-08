@@ -9,10 +9,8 @@ const winArray = [
     [0, 4, 8],
     [2, 4, 6]
 ]
-const Gameboard = (name, gameArray, winArr) => {
+const SoloGameboard = (name, gameArray, winArr) => {
     const getName = () => name;
-    const gameBoard = () => gameArray;
-    const getArr = () => winArr;
     let currentPlayer = name;
 
     const createDiv = () => {
@@ -27,30 +25,29 @@ const Gameboard = (name, gameArray, winArr) => {
         return {winPage, whoWins};
     }
     const playWithSelf = (enemy) => {
+        const winpage = document.querySelector('.win-page');
+        const whowins = document.querySelector('.who-wins');
 
         for (let array of winArr) {
             let [oneIndex, twoIndex, threeIndex] = array;
             if(gameboard[oneIndex] === name 
                 && gameboard[twoIndex] === name
                 && gameboard[threeIndex] === name) {
-                    const {winPage, whoWins} = createDiv();
-                    whoWins.textContent = 'Player Wins';
-                    winPage.style.display = 'block';
+                    whowins.textContent = 'Player Wins';
+                    winpage.style.display = 'flex';
             }
             if(gameboard[oneIndex] === enemy.getName() 
                 && gameboard[twoIndex] === enemy.getName()
                 && gameboard[threeIndex] === enemy.getName()) {
-                    const {winPage, whoWins} = createDiv();
-                    whoWins.textContent = 'Ai Wins';
-                    winPage.style.display = 'block';
-            }   
+                    whowins.textContent = 'Ai Wins';
+                    winpage.style.display = 'flex';
+            }
         }
     }
-    const playWithAi = () => {}
     const makeContainerElem = () => {
-        const container = document.createElement('div');
-        container.classList.add('container');
-        return container;
+        const soloContainer = document.createElement('div');
+        soloContainer.classList.add('solo-container');
+        return soloContainer;
     }
     const makeBoxElem = (index, enemy) => {
         const box = document.createElement('div');
@@ -61,24 +58,34 @@ const Gameboard = (name, gameArray, winArr) => {
             gameArray[index] = currentPlayer;
             box.textContent = gameArray[index];
             playWithSelf(enemy);
-
         }, {once: true});
         return box;
     }
+    const restartGame = (winPage, gameContainerElem, enemy) => {
+        const resetgame = document.querySelector('.reset-btn');
+        resetgame.addEventListener('click', () => {
+            const container = document.querySelector('.container');
+            container.removeChild(winPage);
+            container.removeChild(gameContainerElem)
+            resetGame(enemy);
+        });
+    }
     const resetGame = (enemy) => {
+        const container = document.querySelector('.container');
         gameContainerElem = makeContainerElem();
         const {winPage} = createDiv();
         gameBoxElem = makeBoxElem();
         for (let index = 0; index < 9; index++) {
             gameContainerElem.appendChild(makeBoxElem(index, enemy));
         }
-        document.body.append(gameContainerElem, winPage);
+        gameboard.fill('');
+        container.append(gameContainerElem, winPage);
+        restartGame(winPage, gameContainerElem, enemy);
     }
-    return {resetGame, getName, gameBoard}
+    return {resetGame, getName}
 }
 
-const player = Gameboard('O', gameboard, winArray);
-const ai = Gameboard('X', gameboard, winArray);
+const player = SoloGameboard('O', gameboard, winArray);
+const ai = SoloGameboard('X', gameboard, winArray);
 
 player.resetGame(ai);
-
