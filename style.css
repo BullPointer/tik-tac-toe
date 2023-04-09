@@ -7,6 +7,46 @@ body {
     padding: 0;
     min-height: 100vh;
 }
+.start-page {
+    top: 0;
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    width: 100%;
+    min-height: 100vh;
+}
+.start-page .msg {
+    font-size: 70px;
+}
+.start-page input[type='search'] {
+    padding: 10px;
+    width: 250px;
+    outline: none;
+    border: none;
+    border-bottom: 3px solid rgba(0,0,0,0.9);
+    font-size: 30px;
+    text-align: center;
+    background: transparent;
+    color: white;
+}
+.start-page .start-btn:hover {
+    cursor: pointer;
+}
+.start-page .start-btn {
+    margin-top: 10px;
+    padding: 15px;
+    width: 100px;
+    border: 1px solid rgba(0,0,0,1);
+    border-radius: 10px;
+    font-size: 30px;
+    text-align: center;
+    background: rgb(216, 224, 222);
+}
 nav .header {
     display: flex;
     align-items: center;

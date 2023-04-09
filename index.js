@@ -9,8 +9,9 @@ const winArray = [
     [0, 4, 8],
     [2, 4, 6]
 ]
-const SoloGameboard = (name, gameArray, winArr) => {
+const SoloGameboard = (name, playerName, gameArray, winArr) => {
     const getName = () => name;
+    const opponent = () => playerName;
     let currentPlayer = name;
 
     const createDiv = () => {
@@ -42,14 +43,14 @@ const SoloGameboard = (name, gameArray, winArr) => {
                 && gameboard[oneIndex] === gameboard[twoIndex] 
                 && gameboard[oneIndex] === gameboard[threeIndex]
                 && gameboard[threeIndex] === name) {
-                    whowins.textContent = 'Player Wins';
+                    whowins.textContent = `${playerName} Wins`;
                     winpage.style.display = 'flex';
             }
             if(gameboard[oneIndex] !== ''
                 && gameboard[oneIndex] === gameboard[twoIndex] 
                 && gameboard[oneIndex] === gameboard[threeIndex]
                 && gameboard[threeIndex] === enemy.getName()) {
-                    whowins.textContent = 'Ai Wins';
+                    whowins.textContent = `${enemy.opponent()} Wins`;
                     winpage.style.display = 'flex';
             }
         }
@@ -92,11 +93,43 @@ const SoloGameboard = (name, gameArray, winArr) => {
         container.append(gameContainerElem, winPage);
         restartGame(winPage, gameContainerElem, enemy);
     }
-    return {resetGame, getName}
+    return {resetGame, getName, opponent}
 }
 
-const player = SoloGameboard('O', gameboard, winArray);
-const ai = SoloGameboard('X', gameboard, winArray);
 
-player.resetGame(ai);
 
+const onloadPage = () => {
+    const startPage = document.createElement('div');
+    const msg = document.createElement('div');
+    const input = document.createElement('INPUT');
+    const startBtn = document.createElement('button');
+    startPage.classList.add('start-page');
+    msg.classList.add('msg');
+    input.setAttribute('type', 'search');
+    input.setAttribute('placeholder', 'Input Username');
+    input.classList.add('input');
+    startBtn.classList.add('start-btn');
+    msg.textContent = 'Welcome To TIK TAK TOK Game';
+    startBtn.textContent = 'Start';
+
+    startPage.append(msg, input, startBtn);
+    document.body.appendChild(startPage);
+
+    const nav = document.querySelector('nav');
+    const container = document.querySelector('.container');
+    document.body.removeChild(nav);
+    document.body.removeChild(container);
+    
+    startBtn.addEventListener('click', () => {
+       if (input.value.length >= 1 && input.value.length <= 8) {
+        document.body.append(nav, container);
+        document.body.removeChild(startPage);
+        const player = SoloGameboard('O', input.value, gameboard, winArray);
+        const ai = SoloGameboard('X', "Opponent", gameboard, winArray);
+
+        player.resetGame(ai);
+       }
+        return;
+    })
+}
+onload = onloadPage();
